@@ -18,3 +18,11 @@ class RNN(nn.Module):
         self.input_layer = nn.Linear(input_size + hidden_size, hidden_size)
         self.hidden_layer = nn.Linear(hidden_size, output_size)
         self.relu = nn.ReLU()
+    
+    def forward(self, input, hidden):
+        input_tensor = torch.cat([input, hidden], 1)
+
+        h = self.input_layer(input_tensor)
+        out = self.hidden_layer(h)
+        return((out, h))
+    
