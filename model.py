@@ -43,3 +43,15 @@ hidden_size = 128
 output_size = data[0][1].size(1)
 
 model = RNN(input_size, hidden_size, output_size).to(device)
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), 0.001)
+
+data = data[:20070]
+
+batched_data = []
+for i in range(2007):
+    temp = []
+    for j in range(10):
+        temp.append(data[j])
+    batched_data.append(temp)
+
