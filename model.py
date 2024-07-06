@@ -7,3 +7,14 @@ data_file = 'data/preprocessed.pkl'
 # Loading data
 with open(data_file, 'rb') as file:
     data = pickle.load(file)
+
+
+# Bulding the RNN
+
+class RNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super().__init__()
+        self.hidden_size = hidden_size
+        self.input_layer = nn.Linear(input_size + hidden_size, hidden_size)
+        self.hidden_layer = nn.Linear(hidden_size, output_size)
+        self.relu = nn.ReLU()
