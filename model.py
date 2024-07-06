@@ -37,3 +37,24 @@ class RNN(nn.Module):
     
     def hidden_init(self):
         return(torch.zeros(1, self.hidden_size))
+
+model = RNN(57, 128, data[0][1].size(1))
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr = 0.001)
+
+def train(model, optimizer, loss_fn):
+    model.train()
+    loss_sum = 0
+    for item in data:
+        hidden = model.hidden_init().to(device)
+        X = item[0].to(device)
+        Y = item[1].to(device)
+        for inp in X:
+            output, hidden = model(inp, hidden)
+        loss = loss_fn(output, Y)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        loss_sum += loss.item()
+    avg_loss = loss_sum/len(data)
+    return(avg_loss)
