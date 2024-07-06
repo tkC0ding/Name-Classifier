@@ -46,12 +46,21 @@ model = RNN(input_size, hidden_size, output_size).to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), 0.001)
 
-data = data[:20070]
+hidden = model.hidden_init()
 
-batched_data = []
-for i in range(2007):
-    temp = []
-    for j in range(10):
-        temp.append(data[j])
-    batched_data.append(temp)
+def train(model, optimizer, loss_fn):
+    model.train()
+    loss_add = 0
+    for item in data:
+        X = item[0].to(device)
+        Y = item[1].to(device)
+        for inp in X:
+            output, hidden = model(inp, hidden)   
+        loss = loss_fn(output, Y)
 
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        loss_add += loss.item()
+    avg_loss = loss_add/len(data)
+    return(avg_loss)
