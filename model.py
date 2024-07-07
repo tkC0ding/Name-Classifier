@@ -2,10 +2,24 @@ import torch
 from torch import nn
 import pickle
 import matplotlib.pyplot as plt
-from preprocess import unicode_to_ascii, vectorizer
 import os
+import string
+import unicodedata
 
 data_file = 'data/preprocessed.pkl'
+
+ALL_LETTERS = string.ascii_letters + '.,;'
+N_LETTERS = len(ALL_LETTERS)
+
+def unicode_to_ascii(s):
+    return ''.join(i for i in unicodedata.normalize('NFD', s) if unicodedata.category(i) and i in ALL_LETTERS)
+
+def vectorizer(s):
+    tensor = torch.zeros(len(s), 1, len(ALL_LETTERS))
+    for i in range(len(s)):
+        index = ALL_LETTERS.find(s[i])
+        tensor[i][0][index] = 1
+    return(tensor)
 
 # Loading data
 with open(data_file, 'rb') as file:
