@@ -77,3 +77,8 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('Losses')
 ax.set_title('Monitoring the Loss')
 fig.show()
+
+# Saving the Model
+
+torch.save(model.state_dict(), 'SavedModel/modddel_weights.pth')
+torch.save(model, 'SavedModel/model.pth')
