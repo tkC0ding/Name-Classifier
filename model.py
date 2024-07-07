@@ -2,6 +2,8 @@ import torch
 from torch import nn
 import pickle
 import matplotlib.pyplot as plt
+from preprocess import unicode_to_ascii, vectorizer
+import os
 
 data_file = 'data/preprocessed.pkl'
 
@@ -82,3 +84,17 @@ fig.savefig('Graphs/Loss.png')
 
 torch.save(model.state_dict(), 'SavedModel/modddel_weights.pth')
 torch.save(model, 'SavedModel/model.pth')
+
+# Model Testing
+
+categories = []
+for file in os.listdir('data/'):
+    categories.append(file.split('.')[0])
+
+def predict(model, inp):
+    inp = vectorizer(unicode_to_ascii(inp.strip())).to(device)
+    hidden = model.hidden_init().to(device)
+    for i in inp:
+        output, hidden = model(i, hidden)
+    score, prediction = torch.max(output, 1)
+    print(f"{score.item()}\t{categories[prediction.item()]}")
