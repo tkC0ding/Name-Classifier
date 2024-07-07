@@ -76,7 +76,7 @@ ax.plot(epochs, losses)
 ax.set_xlabel('Epochs')
 ax.set_ylabel('Losses')
 ax.set_title('Monitoring the Loss')
-fig.show()
+fig.savefig('Graphs/Loss.png')
 
 # Saving the Model
 
