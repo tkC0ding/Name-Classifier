@@ -88,7 +88,7 @@ for i in range(epochs):
 # Plotting the Loss
 epochs_range = list(range(10))
 fig, ax = plt.subplots(1, 1)
-ax.plot(epochs, losses)
+ax.plot(epochs_range, losses)
 ax.set_xlabel('Epochs')
 ax.set_ylabel('Losses')
 ax.set_title('Monitoring the Loss')
