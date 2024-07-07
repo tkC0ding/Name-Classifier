@@ -38,7 +38,7 @@ class RNN(nn.Module):
     def hidden_init(self):
         return(torch.zeros(1, self.hidden_size))
 
-model = RNN(57, 128, data[0][1].size(1))
+model = RNN(55, 128, data[0][1].size(1)).to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr = 0.001)
 
@@ -58,3 +58,10 @@ def train(model, optimizer, loss_fn):
         loss_sum += loss.item()
     avg_loss = loss_sum/len(data)
     return(avg_loss)
+
+epochs = 10
+losses = []
+for i in range(epochs):
+    loss = train(model, optimizer, loss_fn)
+    losses.append(loss)
+    print(f"Epoch : {i+1}\tLoss : {loss}")
