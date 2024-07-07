@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import pickle
+import matplotlib.pyplot as plt
 
 data_file = 'data/preprocessed.pkl'
 
@@ -42,6 +43,7 @@ model = RNN(55, 128, data[0][1].size(1)).to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr = 0.001)
 
+# helper function to train the model
 def train(model, optimizer, loss_fn):
     model.train()
     loss_sum = 0
@@ -59,9 +61,19 @@ def train(model, optimizer, loss_fn):
     avg_loss = loss_sum/len(data)
     return(avg_loss)
 
+# Training the model
 epochs = 10
 losses = []
 for i in range(epochs):
     loss = train(model, optimizer, loss_fn)
     losses.append(loss)
     print(f"Epoch : {i+1}\tLoss : {loss}")
+
+# Plotting the Loss
+epochs_range = list(range(10))
+fig, ax = plt.subplots(1, 1)
+ax.plot(epochs, losses)
+ax.set_xlabel('Epochs')
+ax.set_ylabel('Losses')
+ax.set_title('Monitoring the Loss')
+fig.show()
