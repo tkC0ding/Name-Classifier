@@ -98,3 +98,10 @@ def predict(model, inp):
         output, hidden = model(i, hidden)
     score, prediction = torch.max(output, 1)
     print(f"{score.item()}\t{categories[prediction.item()]}")
+
+while(True):
+    inp = input("Enter a name : ")
+    if(inp != 'quit'):
+        predict(inp)
+    else:
+        break
