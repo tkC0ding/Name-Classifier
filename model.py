@@ -116,6 +116,6 @@ def predict(model, inp):
 while(True):
     inp = input("Enter a name : ")
     if(inp != 'quit'):
-        predict(inp)
+        predict(model, inp)
     else:
         break
