@@ -57,7 +57,7 @@ class RNN(nn.Module):
 
 model = RNN(55, 128, data[0][1].size(1)).to(device)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr = 0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
 
 # helper function to train the model
 def train(model, optimizer, loss_fn):
@@ -96,26 +96,5 @@ fig.savefig('Graphs/Loss.png')
 
 # Saving the Model
 
-torch.save(model.state_dict(), 'SavedModel/modddel_weights.pth')
+torch.save(model.state_dict(), 'SavedModel/model_weights.pth')
 torch.save(model, 'SavedModel/model.pth')
-
-# Model Testing
-
-categories = []
-for file in os.listdir('data/'):
-    categories.append(file.split('.')[0])
-
-def predict(model, inp):
-    inp = vectorizer(unicode_to_ascii(inp.strip())).to(device)
-    hidden = model.hidden_init().to(device)
-    for i in inp:
-        output, hidden = model(i, hidden)
-    score, prediction = torch.max(output, 1)
-    print(f"{score.item()}\t{categories[prediction.item()]}")
-
-while(True):
-    inp = input("Enter a name : ")
-    if(inp != 'quit'):
-        predict(model, inp)
-    else:
-        break
